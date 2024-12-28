@@ -19,6 +19,7 @@
         "W_shape": [2, 2, 2],
         "B_shape": [2, 4, 4],
         "padding": "None",
+        "_padding": [0, 1],
         "stride": 1,
         "winit": "one",
         "act": "ReLU"
