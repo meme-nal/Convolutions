@@ -1,5 +1,6 @@
 #include "conv.hpp"
 #include "net.hpp"
+#include "lin.hpp"
 #include <fstream>
 
 int main() {
@@ -46,12 +47,12 @@ int main() {
     double loss = MSE(prediction, Y);
     losses.push_back(loss);
   }
-
+  
   for (const auto& loss : losses) {
     std::cout << loss << '\n';
   }
 
   delete model;
-  
+
   return 0;
 }

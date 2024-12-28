@@ -5,7 +5,6 @@
 #include <vector>
 #include <memory>
 
-using Scalar = float;
 using Matrix = std::vector<std::vector<float>>;
 using Tensor = std::vector<Matrix>;
 

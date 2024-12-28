@@ -2,9 +2,20 @@
 #define NET_HPP
 
 #include "conv.hpp"
+#include "lin.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 using json = nlohmann::json;
+
+/// ACTIVATION FUNCTIONS ///
+Matrix ReLU(const Matrix& Z);
+Tensor ReLU(const Tensor& Z);
+Matrix Linear(const Matrix& Z);
+Tensor Linear(const Tensor& Z);
+
+/// LOSS FUNCTIONS ///
+float MSE(const Matrix& pr, const Matrix& gt);
+float MSE(const Tensor& pr, const Tensor& gt);
 
 class Layer {
 public:
@@ -22,6 +33,8 @@ private:
   Tensor _W;
   Tensor _B;
   Tensor _X;
+  std::string _act;
+  std::string _winit;
 
 public:
   Conv(const json& layer_node);
@@ -39,7 +52,7 @@ class net {
 private:
   std::vector<std::shared_ptr<Layer>> _layers;
   std::string _loss;
-  Scalar __lr;
+  float _lr;
   size_t _miniBatchSize;
   std::string _optimizer;
 
