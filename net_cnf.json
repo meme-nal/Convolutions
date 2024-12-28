@@ -1,0 +1,48 @@
+{
+  "net": {
+    "optim": {
+      "miniBatchSize": 10,
+      "lr": 0.001,
+      "optimizer": "GD",
+      "loss": "MSE"
+    },
+
+    "arch": {
+      "to_use": [
+        "conv1",
+        "conv2",
+        "conv3"
+      ],
+
+      "conv1": {
+        "type": "Conv",
+        "W_shape": [2, 2, 2],
+        "B_shape": [2, 4, 4],
+        "padding": "None",
+        "stride": 1,
+        "winit": "one",
+        "act": "ReLU"
+      },
+
+      "conv2": {
+        "type": "Conv",
+        "W_shape": [2, 2, 2],
+        "B_shape": [1, 3, 3],
+        "padding": "None",
+        "stride": 1,
+        "winit": "one",
+        "act": "ReLU"
+      },
+
+      "conv3": {
+        "type": "Conv",
+        "W_shape": [1, 2, 2],
+        "B_shape": [1, 2, 2],
+        "padding": "None",
+        "stride": 1,
+        "winit": "one",
+        "act": "Linear"
+      }
+    }
+  }
+}

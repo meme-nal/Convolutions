@@ -1,7 +1,9 @@
 #include "conv.hpp"
+#include "net.hpp"
+#include <fstream>
 
 int main() {
-  Tensor X = {
+  Tensor X = { // 3x5x5
     {{50.f, 50.f, 50.f, 50.f, 50.f},
      {50.f, 200.f, 200.f, 200.f, 50.f},
      {50.f, 200.f, 200.f, 200.f, 50.f},
@@ -20,35 +22,36 @@ int main() {
      {50.f, 200.f, 200.f, 200.f, 50.f},
      {50.f, 50.f, 50.f, 50.f, 50.f}}};
 
-  Tensor W = {
-    {{0.f, -1.f, 0.f},
-     {-1.f, 5.f, -1.f},
-     {0.f, -1.f, 0.f}},
-     
-    {{0.f, -1.f, 0.f},
-     {-1.f, 5.f, -1.f},
-     {0.f, -1.f, 0.f}},
+  Tensor Y = {
+    {{3.f, 0.f},
+     {0.f, 3.f}}};
 
-    {{0.f, -1.f, 0.f},
-     {-1.f, 5.f, -1.f},
-     {0.f, -1.f, 0.f}}};
+  /// READING CONFIG ///
+  const std::string netConfigStr = "../net_cnf.json";
 
-  std::cout << "X shape: " << X.size() << '\t' << X[0].size() << '\t' << X[0][0].size() << '\n';
-  std::cout << "W shape: " << W.size() << '\t' << W[0].size() << '\t' << W[0][0].size() << '\n';
+  std::ifstream netConfigFile(netConfigStr);
+  auto netConfig = json::parse(netConfigFile);
 
-  Tensor Z = Conv3d(X, W);
+  netConfigFile.close();
 
-  std::cout << "Z shape: " << Z.size() << '\t' << Z[0].size() << '\t' << Z[0][0].size() << '\n';
+  /// CREATING MODEL ///
+  net* model {new net(netConfig)};
 
-  for (size_t i {0}; i < Z.size(); ++i) {
-    for (size_t j {0}; j < Z[0].size(); ++j) {
-      for (size_t k {0}; k < Z[0][0].size(); ++k) {
-        std::cout << Z[i][j][k] << '\t';
-      }
-      std::cout << '\n';
-    }
-    std::cout << '\n';
+  /// TRAINING MODEL ///
+  const size_t epochs {1};
+  std::vector<double> losses;
+  for (size_t epoch {0}; epoch < epochs; ++epoch) {
+    // FORWARD PASS //
+    Tensor prediction = model->forward(X);
+    double loss = MSE(prediction, Y);
+    losses.push_back(loss);
   }
 
+  for (const auto& loss : losses) {
+    std::cout << loss << '\n';
+  }
+
+  delete model;
+  
   return 0;
 }
